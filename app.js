@@ -13,6 +13,16 @@ io.on("connection", (socket) => {
     })
     //app.js
     //Express View Engine for Handlebars
+
+const io = require('socket.io')(server);
+let onlineUsers = {};
+//Save the channels in this object.
+let channels = { "General": [] };
+
+io.on("connection", (socket) => {
+    // Make sure to send the channels to our chat file
+    require('./sockets/chat.js')(io, socket, onlineUsers, channels);
+});
 const exphbs = require('express-handlebars');
 app.engine('handlebars', exphbs());
 app.set('view engine', 'handlebars');
